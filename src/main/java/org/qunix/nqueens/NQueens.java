@@ -3,6 +3,8 @@
  */
 package org.qunix.nqueens;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -152,6 +154,8 @@ public class NQueens {
    * @return {@link List} of {@link Queen}
    */
   public List<Queen[]> visit(int fromColumn, int toColumn) {
+    
+    Instant now = Instant.now();
 
     logger.debug("Visit start fromColumn: {} and toColumn:{} ", fromColumn, toColumn);
     // result instance
@@ -217,7 +221,8 @@ public class NQueens {
       }
 
     } ;
-
+    Instant end = Instant.now();
+    logger.info("Thread {} took {} ms", Thread.currentThread().getId(), Duration.between(now, end).toMillis());
     return result;
   }
 
