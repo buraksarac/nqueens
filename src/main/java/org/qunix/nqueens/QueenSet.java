@@ -5,38 +5,52 @@ package org.qunix.nqueens;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Iterator;
 import org.qunix.bitset.BitSet;
+import org.qunix.nqueens.exceptions.ChessBoardSizeOutOfRangeException;
 
 /**
+ * 
+ * Small set impl. to store Queens first I start with black/white arrays to use buckets but end up
+ * with this one
+ * 
  * @author burak
  *
  */
-public final class QueenSet implements Serializable {
+final class QueenSet implements Serializable {
 
   /**
    * 
    */
   private static final long serialVersionUID = 1L;
-  private BitSet rows;
-  private BitSet columns;
-  private BitSet hills;
-  private BitSet dales;
+  private BitSet rows; // reserved rows for existing queens
+  private BitSet columns; // reserved cols for existing queens
+  private BitSet hills; // reserved hills for existing queens
+  private BitSet dales; // reserved dales for existing queens
   private int size = 0;
   private Queen[] queens;
-  private int currentColumn;
-  private int currentRow;
+  private int currentColumn; // used for rollback to last known position
+  private int currentRow; // used for rollback to last known position
   private int dimension;
   private int firstQueenColumn;
 
   /**
    * 
+   * Default constructor
+   * 
+   * @param capacity boar
+   * @param dimension
    */
-  QueenSet(int capacity, int dimension) {
-    this.queens = new Queen[capacity];
+  QueenSet(int dimension) {
+    if(dimension <= 0) {
+      throw new ChessBoardSizeOutOfRangeException(dimension);
+    }
+    this.queens = new Queen[dimension];
     this.rows = new BitSet(dimension);
     this.columns = new BitSet(dimension);
     this.hills = new BitSet((dimension << 2) - 1);
     this.dales = new BitSet((dimension << 2) - 1);
+    // set all sets to false (from 0 to its size)
     this.rows.resize(dimension);
     this.columns.resize(dimension);
     this.hills.resize((dimension << 2) - 1);
@@ -46,6 +60,11 @@ public final class QueenSet implements Serializable {
 
 
 
+  /**
+   * Adds a new queen into the list
+   * 
+   * @param q queen to add
+   */
   void add(Queen q) {
     this.rows.on(this.currentRow = q.getRow());
     this.columns.on(this.currentColumn = q.getColumn());
@@ -55,16 +74,27 @@ public final class QueenSet implements Serializable {
   }
 
 
+  /**
+   * 
+   * @return size of list
+   */
   public int size() {
     return this.size;
   }
 
 
+  /**
+   * @return current queens
+   */
   public Queen[] getQueens() {
     return queens;
 
   }
 
+  /**
+   * removes last queen and updates last known position to next column of removed queen. If next
+   * column is out of range then removes also one before
+   */
   public void rollback() {
     do {
       int index = --this.size;
@@ -88,16 +118,29 @@ public final class QueenSet implements Serializable {
     return firstQueenColumn;
   }
 
+  /**
+   * @param row to check
+   * @return true if already reserved
+   */
   public boolean isRowReserved(int row) {
     return this.rows.get(row);
   }
 
+  /**
+   * @param column to check
+   * @return true if already reserved
+   */
   public boolean isColumnReserved(int column) {
     return this.columns.get(column);
   }
 
+  /**
+   * @param q queen to check
+   * @return true if given queen doesnt threat others
+   */
   public boolean isThreatening(Queen q) {
-    return this.hills.get(q.getHill()) || this.dales.get(q.getDale()); // row&col check done by iterator
+    return this.hills.get(q.getHill()) || this.dales.get(q.getDale()); // row&col check done by
+                                                                       // iterators
   }
 
   @Override
@@ -105,6 +148,9 @@ public final class QueenSet implements Serializable {
     return Arrays.toString(queens);
   }
 
+  /**
+   * @return {@link Iterator} for columns
+   */
   public QueenIterator columns() {
     return new QueenIterator() {
 
@@ -134,6 +180,9 @@ public final class QueenSet implements Serializable {
     };
   }
 
+  /**
+   * @return iterator for rows
+   */
   public QueenIterator rows() {
     return new QueenIterator() {
 

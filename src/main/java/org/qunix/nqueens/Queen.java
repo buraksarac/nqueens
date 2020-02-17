@@ -4,6 +4,9 @@
 package org.qunix.nqueens;
 
 /**
+ * 
+ * DTO for Queens to hold row, column and precalculated hill and dale
+ * 
  * @author burak
  *
  */
@@ -21,9 +24,14 @@ public final class Queen {
    * since its immutable
    */
   Queen() {}
-  
 
 
+
+  /**
+   * @param row row
+   * @param column col
+   * @param n dimension to calculate hill and dale
+   */
   Queen(int row, int column, int n) {
     super();
     setValues(row, column, n);
@@ -60,6 +68,11 @@ public final class Queen {
     return dale;
   }
 
+  /**
+   * @param row row
+   * @param column col
+   * @param n dimension to calculate hill and dale
+   */
   void setValues(int row, int column, int n) {
     this.row = row;
     this.column = column;

@@ -9,9 +9,25 @@
 			</Pattern>
 		</layout>
 	</appender>
+	
+	<appender name="TEST"
+		class="ch.qos.logback.core.ConsoleAppender">
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>
+				%d{HH:mm:ss.SSS} [%t] %-5level TEST: %M - %msg%n
+			</Pattern>
+		</layout>
+	</appender>
 
 	<logger name="org.qunix" level="debug" additivity="false">
 		<appender-ref ref="CONSOLE" />
+	</logger>
+	
+	<logger name="org.qunix.NqueensTest" level="debug" additivity="false">
+		<appender-ref ref="TEST" />
+	</logger>
+	<logger name="org.qunix.QueenSetTest" level="debug" additivity="false">
+		<appender-ref ref="TEST" />
 	</logger>
 
 	<root level="error">
