@@ -46,9 +46,9 @@ public class NQueens {
   private static final Logger logger = LoggerFactory.getLogger(NQueens.class);
 
   /**
-   * Max board size, I dont know if someone ever reach this but TODO this can be increased
+   * Max board size, 19 is 621012754 int overflow^^
    */
-  private static final int MAX_BOARD_SIZE = 32768;
+  private static final int MAX_BOARD_SIZE = 18;
 
   private int boardSize;
   private int n;
@@ -65,13 +65,16 @@ public class NQueens {
     // check board size if its in range
     if (n <= 0 || n > MAX_BOARD_SIZE) {
       logger.error(
-          "Given dimension {} is not in allowed range (greater than zero or less than 32768)", n);
+          "Given dimension {} is not in allowed range (greater than zero or less than 18)", n);
       throw new ChessBoardSizeOutOfRangeException(n);
     }
 
     logger.debug("NQueens instantiated with dimension {} and board size {}", n, boardSize);
   }
 
+  public int getCount() {
+    return CountCache.RESULT_CACHE[n][1];
+  }
 
   /**
    * Splits first row calculations equally between given number of threads, after execution complete

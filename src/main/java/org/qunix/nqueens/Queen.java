@@ -16,6 +16,7 @@ public final class Queen {
   protected int column;
   protected int hill;
   protected int dale;
+  
 
 
 

@@ -10,7 +10,7 @@ package org.qunix.nqueens.exceptions;
 public class ChessBoardSizeOutOfRangeException extends RuntimeException {
 
   private static final String message =
-      "Invalid size requested! %s²  should be greater than 0 and less than 1073741824";; //extended ascii in comments ^^
+      "Invalid size requested! %s  should be greater than 0 and less than 18";; 
 
   /**
    * 
