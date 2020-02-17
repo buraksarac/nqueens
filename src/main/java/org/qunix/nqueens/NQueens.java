@@ -27,11 +27,11 @@ import org.slf4j.LoggerFactory;
  * example usages: <br>
  * <code>
  *  <br>
- *  new NQueens(n).permute();
+ *  new NQueens(n).visit();
  *  <br>
- *  new NQueens(n).permute(threadCount);
+ *  new NQueens(n).visit(threadCount);
  *  <br>
- *  new NQueens(n).permute(firstRowQueenFromColumn, firstRowQueenToColumn);
+ *  new NQueens(n).visit(firstRowQueenFromColumn, firstRowQueenToColumn);
  *  <br>
  * </code>
  * 
