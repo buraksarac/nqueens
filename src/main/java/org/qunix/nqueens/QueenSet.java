@@ -42,7 +42,7 @@ final class QueenSet implements Serializable {
    * @param dimension
    */
   QueenSet(int dimension) {
-    if(dimension <= 0) {
+    if (dimension <= 0) {
       throw new ChessBoardSizeOutOfRangeException(dimension);
     }
     this.queens = new Queen[dimension];
@@ -87,7 +87,9 @@ final class QueenSet implements Serializable {
    * @return current queens
    */
   public Queen[] getQueens() {
-    return queens;
+    Queen[] queenCopy = new Queen[dimension];
+    System.arraycopy(queens, 0, queenCopy, 0, size);;
+    return queenCopy;
 
   }
 

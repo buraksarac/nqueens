@@ -4,6 +4,7 @@
 package org.qunix.nqueens;
 
 import static org.junit.Assert.assertEquals;
+import java.util.Arrays;
 import java.util.List;
 import org.junit.Test;
 import org.qunix.nqueens.exceptions.ChessBoardSizeOutOfRangeException;
@@ -66,6 +67,21 @@ public class NqueensTest {
     logger.info("Single thread result: {}", queens);
     assertEquals(queens.get(0)[0].getRow(), 0);
     assertEquals(queens.get(0)[0].getColumn(), 0);
+
+  }
+  
+  @Test
+  public void singleThreadsTest() {
+    List<Queen[]> queens = new NQueens(4).visit();
+    assertEquals(queens.size(), 2);
+    logger.info("Single thread result size: {}", queens.size());
+    queens.stream().forEach(a->{
+      logger.info("Solution: {}",Arrays.toString(a));
+    });
+    assertEquals(queens.get(0)[0].getRow(), 0);
+    assertEquals(queens.get(0)[0].getColumn(), 1);
+    assertEquals(queens.get(1)[0].getRow(), 0);
+    assertEquals(queens.get(1)[0].getColumn(), 2);
 
   }
 
