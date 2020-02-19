@@ -7,7 +7,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -107,8 +106,7 @@ public class NQueens {
 
     try (AutoCloseable closeable = service::shutdown) {
       // callables instance for the invoker
-      List<Callable<List<Queen[]>>> callables = new ArrayList<>();
-
+      List<Future<List<Queen[]>>> futures = new ArrayList<>();
       logger.debug("Creating thread callables");
       // share first row dimension between threads
       for (int t = 0; t < numberOfThreads; t++) {
@@ -118,12 +116,10 @@ public class NQueens {
         if (t == numberOfThreads - 1) {
           results.addAll(visit(qMin, qMax));
         } else {
-          callables.add(() -> visit(qMin, qMax));
+          futures.add(service.submit(() -> visit(qMin, qMax)));
         }
 
       }
-
-      List<Future<List<Queen[]>>> futures = service.invokeAll(callables);
       for (Future<List<Queen[]>> f : futures) {
         results.addAll(f.get());
       }
@@ -184,7 +180,7 @@ public class NQueens {
     int row = 0, col = 0;
     Queen queen = new Queen();
     // iterate until first queen reaches target column on first row
-    rows: while (queens.getFirstQueenColumn() < toColumn) {
+    while (queens.getFirstQueenColumn() < toColumn) {
 
       // we scan a row but couldnt place anything
       // that means we can not reach target N so rollback last one
@@ -220,7 +216,7 @@ public class NQueens {
         // there is no point for more iteration,
         // new queen added
         // move to next row
-        continue rows;
+        break;
       }
 
     } ;
