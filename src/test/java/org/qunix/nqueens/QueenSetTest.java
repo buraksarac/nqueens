@@ -57,12 +57,13 @@ public class QueenSetTest {
     set.add(q2);
     set.add(new Queen(5, 6, 8));
     set.rollback();
+    Queen[] queens = set.getCopyOfQueens();
     assertEquals(2, set.size());
-    assertEquals(q2, set.getQueens()[1]);
-    assertEquals(q1, set.getQueens()[0]);
+    assertEquals(q2, queens[1]);
+    assertEquals(q1, queens[0]);
     set.rollback();
     assertEquals(1, set.size());
-    assertEquals(q1, set.getQueens()[0]);
+    assertEquals(q1, queens[0]);
     set.rollback();
     assertEquals(0, set.size());
   }
@@ -133,7 +134,7 @@ public class QueenSetTest {
     assertTrue(columns.hasNext());
     assertTrue(7 == columns.next()); // last added was 6
   }
-  
+
   /*
    * row tests...
    */
