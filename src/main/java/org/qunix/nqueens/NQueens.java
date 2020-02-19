@@ -165,7 +165,7 @@ public class NQueens {
     // first queen instance
     queens.add(new Queen(0, fromColumn, n));
     if(n == 1) {
-      result.add(queens.getQueens());
+      result.add(queens.getCopyOfQueens());
       return result;
     }
 
@@ -211,7 +211,7 @@ public class NQueens {
         queen = new Queen();
         // we achieve target, add to the results
         if (queens.size() == n) {
-          result.add(queens.getQueens());
+          result.add(queens.getCopyOfQueens());
         }
         // there is no point for more iteration,
         // new queen added

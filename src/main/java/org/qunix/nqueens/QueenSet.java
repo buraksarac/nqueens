@@ -84,9 +84,9 @@ final class QueenSet implements Serializable {
 
 
   /**
-   * @return current queens
+   * @return copy of current queens
    */
-  public Queen[] getQueens() {
+  public Queen[] getCopyOfQueens() {
     Queen[] queenCopy = new Queen[dimension];
     System.arraycopy(queens, 0, queenCopy, 0, size);;
     return queenCopy;
